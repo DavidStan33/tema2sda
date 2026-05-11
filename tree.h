@@ -18,4 +18,13 @@ Tree *createTreeNode(char letter);
 Tree *insertWordInTree(Tree *tree, char *word);
 
 int getCharIndex(char c);
+
+RefFileList *createRefFileNode(NodeFile *file);
+
+void addFileRefToTreeNode(Tree *node, NodeFile *file);
+
+Tree *findWordInTree(Tree *tree, char *word);
+
+void removeFileRefFromTreeNode(Tree *node, NodeFile *file);
+
 #endif

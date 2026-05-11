@@ -3,6 +3,7 @@
 
 #define MAX_WORD_LEN 101
 
+#include <stdio.h>
 typedef struct WordNode {
 	char word[MAX_WORD_LEN];
 	struct WordNode* next;
@@ -36,7 +37,7 @@ NodeFile *findFile(ListFile *list, char *id);
 
 int isListEmpty(ListFile *list);
 
-ListFile *insertFileAtTail(ListFile *list, NodeFile *node);
+void insertFileAtTail(ListFile *list, NodeFile *node);
 
 WordNode *createWordNode(char *word);
 
@@ -45,5 +46,7 @@ WordNode *fileHasWord(NodeFile *file, char *word);
 void addWordToFile(NodeFile *file, char *word);
 
 int isWordListEmpty(WordNode *word);
+
+void removeFileFromList(ListFile *list, NodeFile *file);
 
 #endif

@@ -16,6 +16,20 @@ Tree *createTreeNode(char letter) {
 	return node;
 }
 
+RefFileList *createRefFileNode(NodeFile *file) {
+	RefFileList *node = (RefFileList *) malloc(sizeof(RefFileList));
+	node->file = file;
+	node->next = NULL;
+	return node;
+}
+
+void addFileRefToTreeNode(Tree *node, NodeFile *file) {
+	RefFileList *newRef = createRefFileNode(file);
+	newRef->next = node->ref_list;
+	node->ref_list = newRef;
+	node->nr_files++;
+}
+
 int getCharIndex(char c) {
 	return c - 'a';
 }
@@ -32,4 +46,40 @@ Tree *insertWordInTree(Tree *tree, char *word) {
 	}
 	curr->is_terminal = 1;
 	return curr;
+}
+
+Tree *findWordInTree(Tree *tree, char *word) {
+	int len = strlen(word);
+	Tree *curr = tree;
+	for(int i = 0; i < len; i++) {
+		int index = getCharIndex(word[i]);
+		if(curr->kids[index] == NULL)
+			return NULL;
+		curr = curr->kids[index];
+	}
+	if(curr->is_terminal == 1)
+		return curr;
+	else
+		return NULL;
+}
+
+void removeFileRefFromTreeNode(Tree *node, NodeFile *file) {
+	RefFileList *prev = NULL;
+	RefFileList *curr = node->ref_list;
+	while(curr != NULL) {
+		if(curr->file == file) {
+			if(prev == NULL)
+				node->ref_list = curr->next;
+			else
+				prev->next = curr->next;
+			
+			free(curr);
+			node->nr_files--;
+			return;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+
+
 }

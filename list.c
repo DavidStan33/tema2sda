@@ -112,10 +112,8 @@ WordNode *fileHasWord(NodeFile *file, char *word) {
 
 }
 
-ListFile *insertFileAtTail(ListFile *list, NodeFile *node) {
+void insertFileAtTail(ListFile *list, NodeFile *node) {
 	if(isListEmpty(list)) {
-		if(list == NULL)
-			list = initList();
 		list->head = node;
 		list->tail = node;
 		node->prev = NULL;
@@ -126,7 +124,6 @@ ListFile *insertFileAtTail(ListFile *list, NodeFile *node) {
 		list->tail->next = node;
 		list->tail = node;
 	}
-	return list;
 }
 
 void addWordToFile(NodeFile *file, char *word) {
@@ -141,4 +138,19 @@ void addWordToFile(NodeFile *file, char *word) {
 		words = words->next;
 	}
 	words->next = createWordNode(word);
+}
+
+void removeFileFromList(ListFile *list, NodeFile *file) {
+	if(isListEmpty(list)) return;
+	if(file->prev != NULL)
+		file->prev->next = file->next;
+	else 
+		list->head = file->next;
+	if(file->next != NULL)
+		file->next->prev = file->prev;
+	else
+		list->tail = file->prev;
+
+	file->prev = NULL;
+	file->next = NULL;
 }
