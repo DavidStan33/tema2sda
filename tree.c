@@ -16,7 +16,7 @@ Tree *createTreeNode(char letter) {
 	return node;
 }
 
-RefFileList *createRefFileNode(NodeFile *file) {
+static RefFileList *createRefFileNode(NodeFile *file) {
 	RefFileList *node = (RefFileList *) malloc(sizeof(RefFileList));
 	node->file = file;
 	node->next = NULL;
@@ -30,8 +30,12 @@ void addFileRefToTreeNode(Tree *node, NodeFile *file) {
 	node->nr_files++;
 }
 
-int getCharIndex(char c) {
+static int getCharIndex(char c) {
 	return c - 'a';
+}
+
+int getCharByIndex(int i) {
+	return 'a' + i;
 }
 
 Tree *insertWordInTree(Tree *tree, char *word) {
@@ -80,6 +84,51 @@ void removeFileRefFromTreeNode(Tree *node, NodeFile *file) {
 		prev = curr;
 		curr = curr->next;
 	}
+}
 
+int hasChildren(Tree *node) {
+	for(int i = 0; i < ALPHABET_SIZE; i++) {
+		if(node->kids[i] != NULL)
+			return 1;
+	}
+	return 0;
+}
 
+int removeWordFromTreeHelper(Tree *root, char *word, size_t depth) {
+	if(root == NULL)
+		return 0;
+	if(depth == strlen(word)) {
+		root->is_terminal = 0;
+		return depth > 0 && !hasChildren(root);
+	}
+	else {
+		int index = getCharIndex(word[depth]);
+		if(removeWordFromTreeHelper(root->kids[index], word, depth + 1)) {
+			free(root->kids[index]);
+			root->kids[index] = NULL;
+		}
+		return depth > 0 && root->is_terminal == 0 && !hasChildren(root);
+	}
+}
+
+void removeWordFromTree(Tree *root, char *word) {
+	removeWordFromTreeHelper(root, word, 0);
+}
+
+void freeRefFileList(RefFileList *refList) {
+	while(refList != NULL) {
+		RefFileList *curr = refList;
+		refList = refList->next;
+		free(curr);
+	}
+}
+
+void freeTree(Tree *root) {
+	if(root == NULL)
+		return;
+	for(int i = 0; i < ALPHABET_SIZE; i++) {
+		freeTree(root->kids[i]);
+	}
+	freeRefFileList(root->ref_list);
+	free(root);
 }

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include "list.h"
+#include <stdlib.h>
+#include "files.h"
+#include "read.h"
 #include "commands.h"
 #include "tree.h"
 
@@ -49,8 +51,47 @@ int main()
 			{
 				fprintf(out, "OK\n");
 			}
+			free(id);
+		}
+		else if (strcmp(command, "ADDKW") == 0) {
+			char *id = readID(in);
+			char word[MAX_WORD_LEN];
+			fscanf(in, "%s", word);
+			int result = addkw(fileList, tree, id, word);
+			if (result == 0)
+				fprintf(out, "NOT FOUND\n");
+			else
+				fprintf(out, "OK\n");
+			free(id);
+		}
+		else if (strcmp(command, "DELKW") == 0) {
+			char *id = readID(in);
+			char word[MAX_WORD_LEN];
+			fscanf(in, "%s", word);
+			int result = delkw(fileList, tree, id, word);
+			if (result == 0)
+				fprintf(out, "NOT FOUND\n");
+			else
+				fprintf(out, "OK\n");
+			free(id);
+		}
+		else if (strcmp(command, "FIND") == 0) {
+			char word[MAX_WORD_LEN];
+			fscanf(in, "%s", word);
+			findC(tree, word, out);
+		}
+		else if (strcmp(command, "TOPK") == 0) {
+			char word[MAX_WORD_LEN];
+			int k;
+			fscanf(in, "%s %d", word, &k);
+			topk(tree, word, k, out);
+		}
+		else if (strcmp(command, "PRINT") == 0) {
+			printC(tree, out);
 		}
 	}
+	freeTree(tree);
+	freeListFile(fileList);
 	fclose(in);
 	fclose(out);
 	return 0;

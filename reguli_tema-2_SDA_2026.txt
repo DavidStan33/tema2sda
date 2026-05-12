@@ -1,0 +1,57 @@
+﻿REGULI TEMA 2 SDA 2026
+Seriile CA, CB, CC, CD
+
+
+1. Notare
+
+
+* 95 puncte + 20 puncte bonus obținute pe testele checker-ului automat;
+* 5 puncte: README – va conține detalii despre implementarea temei, precum și punctajul obținut la teste (la rularea pe calculatorul propriu) 
+* Fiecare test va fi verificat din punct de vedere al rezultatului obținut, dar și din punct de vedere al posibilelor erori la rularea cu valgrind. În cazul în care la rularea valgrind se obțin erori, punctajul aferent testului va fi 90% din punctajul maxim asociat testului.
+* Temele care nu compilează, nu rulează sau obțin punctaj 0 la teste, indiferent de motive, vor primi punctaj 0
+* În urma corectării manuale a codului, se vor verifica aspecte legate de coding style. Acestea pot duce la depunctări de max 15 puncte: codul trebuie sa fie comentat, consistent și ușor de citit (a se vedea [1]). De exemplu, tema nu trebuie sa conțină:
+   * warninguri la compilare; 
+   * tab-uri amestecate cu spații; 
+   * denumire neadecvată a funcțiilor sau a variabilelor;
+   * folosirea incorectă de pointeri, neverificarea codurilor de eroare;
+   * utilizarea unor metode ce consumă resurse în mod inutil (alocare de memorie);
+   * neeliberarea resurselor folosite (trebuie să vă asigurați că la finalul execuției este eliberată memoria ce a fost alocată dinamic, că au fost șterse fișierele temporare, că au fost închise fișierele folosite);
+   * utilizarea variabilelor globale sau statice;
+   * alte situații nespecificate aici, dar considerate inadecvate;
+   * utilizare goto sau alte construcții similare.
+* De asemenea, punctajele oferite de checker-ul automat pot fi ajustate (reduse) și în alte cazuri, de exemplu în cazul în care nu ați respectat restricțiile referitoare la structurile impuse, afișare rezultate fără a face prelucrări, etc)
+* Temele neprezentate la laborator (la o dată ce va fi ulterior anunțată) vor fi notate cu 0 puncte (indiferent de punctajul obținut pe checker).
+
+
+________________
+
+
+2. Reguli de trimitere a temelor
+
+
+* Temele vor fi încărcate pe moodle utilizând instanța de checker automat folosită de fiecare serie în parte (ce o să fie comunicată ulterior).
+
+
+* Arhiva finală a temei rezolvate trebuie să fie de tip zip și să conțină:
+   * fișierele sursă
+      * Fiecare fișier sursă creat sau modificat trebuie să înceapă cu un comentariu de forma:
+                        /* NUME Prenume - grupa */
+   * fișierul README în care va fi detaliat modul de implementare al rezolvării
+   * fișierul Makefile cu trei reguli (build, run și clean)
+      * Fișierul trebuie obligatoriu denumit Makefile și trebuie sa conțină cele 3 reguli menționate
+      * Regula build va compila sursele și va crea executabilul numit temaX (unde X o să fie 1 sau 2 în funcție de temă)
+      * Regula run care rulează executabilul creat
+      * Regula clean care va șterge executabilele create
+   * Arhiva va conține numai fișierele menționate mai sus (nu se acceptă fișiere executabile sau obiect). De asemenea, nu trebuie să includeți checker-ul în arhiva încărcată.
+   * Dacă arhiva nu respectă aceste specificații, aceasta nu va fi acceptată la upload și implicit tema nu va fi luată în considerare
+
+
+3. Reguli împotriva copierii temelor 
+
+
+* se consideră copiate doua teme care seamănă suficient de mult pentru a putea trage această concluzie; 
+* se consideră copiate temele care preiau implementări de structuri / bucăți de cod din diverse surse de pe Internet;
+* modificarea unei alte teme, asemănarea mai mult sau mai puțin evidentă a implementării, bucăți de cod identice etc. duc la considerarea temelor în cauză ca fiind copiate; 
+* pentru prima temă copiată: atât sursei cât și destinației li se vor anula punctajul pentru tema respectivă şi ambii studenţi vor primi mustrare scrisă, fără discuții relative la cine a copiat de la cine și a cui e vina; 
+* la a doua temă copiată: atât sursei cât și destinației li se vor anula punctajul pentru toate temele (ceea ce va duce la repetarea materiei) şi ambii studenţi vor primi mustrare scrisă, fără discuții relative la cine a copiat de la cine și a cui e vina.
+1. https://ocw.cs.pub.ro/courses/programare/coding-style

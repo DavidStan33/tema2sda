@@ -1,9 +1,8 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef FILES_H
+#define FILES_H
 
 #define MAX_WORD_LEN 101
 
-#include <stdio.h>
 typedef struct WordNode {
 	char word[MAX_WORD_LEN];
 	struct WordNode* next;
@@ -17,19 +16,14 @@ typedef struct NodeFile {
 	struct NodeFile* prev;
 } NodeFile;
 
-typedef struct RefFileList {
-	NodeFile* file;
-	struct RefFileList* next;
-} RefFileList;
-
 typedef struct ListFile {
 	NodeFile* head;
 	NodeFile* tail;
 } ListFile;
 
-char *readID(FILE *in);
-
 NodeFile *createFileNode(char *id, int score, WordNode *words);
+
+WordNode *createWordNode(char *word);
 
 ListFile *initList();
 
@@ -39,8 +33,6 @@ int isListEmpty(ListFile *list);
 
 void insertFileAtTail(ListFile *list, NodeFile *node);
 
-WordNode *createWordNode(char *word);
-
 WordNode *fileHasWord(NodeFile *file, char *word);
 
 void addWordToFile(NodeFile *file, char *word);
@@ -48,5 +40,13 @@ void addWordToFile(NodeFile *file, char *word);
 int isWordListEmpty(WordNode *word);
 
 void removeFileFromList(ListFile *list, NodeFile *file);
+
+void removeWordFromFile(NodeFile *file, char *word);
+
+void freeWords(WordNode *words);
+
+void freeFile(NodeFile *file);
+
+void freeListFile(ListFile *list);
 
 #endif
