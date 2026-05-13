@@ -1,3 +1,5 @@
+// Stan David-Gabriel 313CD
+
 #ifndef TREE_H
 #define TREE_H
 
@@ -5,33 +7,35 @@
 
 #define ALPHABET_SIZE 26
 
-typedef struct RefFileList {
-	NodeFile* file;
-	struct RefFileList* next;
-} RefFileList;
+typedef struct ref_file_list {
+	node_file *file;
+	struct ref_file_list *next;
+} ref_file_list;
 
-typedef struct Tree {
+typedef struct tree {
 	char letter;
 	int is_terminal;
 	int nr_files;
-	RefFileList *ref_list;
-	struct Tree *kids[ALPHABET_SIZE];
-} Tree;
+	ref_file_list *ref_list;
+	struct tree *kids[ALPHABET_SIZE];
+} tree;
 
-Tree *createTreeNode(char letter);
+tree *create_tree_node(char letter);
 
-Tree *insertWordInTree(Tree *tree, char *word);
+tree *insert_word_in_tree(tree *tree, char *word);
 
-int getCharByIndex(int i);
+int get_char_by_index(int i);
 
-void addFileRefToTreeNode(Tree *node, NodeFile *file);
+void add_file_ref_to_tree_node(tree *node, node_file *file);
 
-Tree *findWordInTree(Tree *tree, char *word);
+tree *find_word_in_tree(tree *tree, char *word);
 
-void removeFileRefFromTreeNode(Tree *node, NodeFile *file);
+tree *find_prefix_in_tree(tree *tree, char *prefix);
 
-void removeWordFromTree(Tree *root, char *word);
+void remove_file_ref_from_tree_node(tree *node, node_file *file);
 
-void freeTree(Tree *root);
+void remove_word_from_tree(tree *root, char *word);
+
+void free_tree(tree *root);
 
 #endif

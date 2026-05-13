@@ -1,8 +1,10 @@
+// Stan David-Gabriel 313CD
+
 #ifndef READ_H
 #define READ_H
 
 #include <stdio.h>
 
-char *readID(FILE *in);
+char *read_id(FILE *in);
 
 #endif

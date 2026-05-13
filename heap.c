@@ -1,79 +1,89 @@
+// Stan David-Gabriel 313CD
+
 #include <stdlib.h>
 #include <string.h>
 #include "heap.h"
 
-Heap *createHeap(int capacity) {
-	Heap *heap = (Heap *) malloc(sizeof(Heap));
-	heap->size = 0;
-	heap->capacity = capacity;
-	heap->files = (NodeFile **) malloc(sizeof(NodeFile *) * capacity);
-	return heap;
+heap *create_heap(int capacity)
+{
+	heap *h = (heap *)malloc(sizeof(heap));
+	h->size = 0;
+	h->capacity = capacity;
+	h->files = (node_file **)malloc(sizeof(node_file *) * capacity);
+	return h;
 }
 
-static int compare(NodeFile *a, NodeFile *b) {
-	if(a->score > b->score)
+static int compare(node_file *a, node_file *b)
+{
+	if (a->score > b->score)
 		return 1;
-	if(a->score < b->score)
+	if (a->score < b->score)
 		return 0;
-	if(strcmp(a->id, b->id) < 0)
+	if (strcmp(a->id, b->id) < 0)
 		return 1;
 	else
 		return 0;
 }
 
-static Heap *siftUp(Heap *heap, int index) {
-	while(index > 0 && compare(heap->files[(index - 1) / 2], heap->files[index]) == 0) {
-		NodeFile *aux = heap->files[(index - 1) / 2];
-		heap->files[(index - 1) / 2] = heap->files[index];
-		heap->files[index] = aux;
+static heap *sift_up(heap *h, int index)
+{
+	while (index > 0 &&
+	       compare(h->files[(index - 1) / 2], h->files[index]) == 0) {
+		node_file *aux = h->files[(index - 1) / 2];
+		h->files[(index - 1) / 2] = h->files[index];
+		h->files[index] = aux;
 		index = (index - 1) / 2;
 	}
-	return heap;
+	return h;
 }
 
-Heap *insertHeap(Heap *heap, NodeFile *file) {
-	if(heap->size == heap->capacity) {
-		heap->capacity *= 2;
-		heap->files = realloc(heap->files, heap->capacity * sizeof(NodeFile *));
+heap *insert_heap(heap *h, node_file *file)
+{
+	if (h->size == h->capacity) {
+		h->capacity *= 2;
+		h->files = realloc(h->files, h->capacity * sizeof(node_file *));
 	}
-	heap->files[heap->size] = file;
-	heap = siftUp(heap, heap->size);
-	heap->size++;
-	return heap;
+	h->files[h->size] = file;
+	h = sift_up(h, h->size);
+	h->size++;
+	return h;
 }
 
-static Heap *siftDown(Heap *heap, int index) {
-	int maxIndex = index;
+static heap *sift_down(heap *h, int index)
+{
+	int max_index = index;
 	int l = index * 2 + 1;
-	if(l < heap->size && compare(heap->files[l], heap->files[maxIndex]) == 1)
-		maxIndex = l;
+	if (l < h->size && compare(h->files[l], h->files[max_index]) == 1)
+		max_index = l;
 	int r = index * 2 + 2;
-	if(r < heap->size && compare(heap->files[r], heap->files[maxIndex]) == 1)
-		maxIndex = r;
-	if(index != maxIndex) {
-		NodeFile *aux = heap->files[index];
-		heap->files[index] = heap->files[maxIndex];
-		heap->files[maxIndex] = aux;
-		heap = siftDown(heap, maxIndex);
+	if (r < h->size && compare(h->files[r], h->files[max_index]) == 1)
+		max_index = r;
+	if (index != max_index) {
+		node_file *aux = h->files[index];
+		h->files[index] = h->files[max_index];
+		h->files[max_index] = aux;
+		h = sift_down(h, max_index);
 	}
-	return heap;
+	return h;
 }
 
-NodeFile *extractMax(Heap *heap) {
-	NodeFile *max = NULL;
-	if(heap && heap->size > 0) {
-		max = heap->files[0];
-		heap->files[0] = heap->files[heap->size - 1];
-		heap->size--;
-		heap = siftDown(heap, 0);
+node_file *extract_max(heap *h)
+{
+	node_file *max = NULL;
+	if (h && h->size > 0) {
+		max = h->files[0];
+		h->files[0] = h->files[h->size - 1];
+		h->size--;
+		h = sift_down(h, 0);
 	}
 	return max;
 }
 
-Heap *freeHeap(Heap *heap) {
-	if (heap != NULL) {
-		free(heap->files);
+heap *free_heap(heap *h)
+{
+	if (h) {
+		free(h->files);
 	}
-	free(heap);
+	free(h);
 	return NULL;
 }

@@ -1,20 +1,22 @@
+// Stan David-Gabriel 313CD
+
 #ifndef HEAP_H
 #define HEAP_H
 
 #include "files.h"
 
-typedef struct Heap {
+typedef struct heap {
 	int size;
 	int capacity;
-	NodeFile** files;
-} Heap;
+	node_file **files;
+} heap;
 
-Heap *createHeap(int capacity);
+heap *create_heap(int capacity);
 
-Heap *insertHeap(Heap *heap, NodeFile *file);
+heap *insert_heap(heap *heap, node_file *file);
 
-NodeFile *extractMax(Heap *heap);
+node_file *extract_max(heap *heap);
 
-Heap *freeHeap(Heap *heap);
+heap *free_heap(heap *heap);
 
 #endif

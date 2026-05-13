@@ -1,3 +1,5 @@
+// Stan David-Gabriel 313CD
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -8,90 +10,83 @@
 
 #define MAX_COMMAND_LENGTH 10
 
-int main()
+int main(void)
 {
 	FILE *in = fopen("indexare.in", "r");
 	FILE *out = fopen("indexare.out", "wt");
 
-	ListFile *fileList = initList();
-	Tree *tree = createTreeNode('\0');
+	list_file *file_list = init_list();
+	tree *root = create_tree_node('\0');
 	int nr_commands;
 	fscanf(in, "%d", &nr_commands);
 	char command[MAX_COMMAND_LENGTH];
-	for (int i = 0; i < nr_commands; i++)
-	{
+	for (int i = 0; i < nr_commands; i++) {
 		fscanf(in, "%s", command);
-		if (strcmp(command, "ADD") == 0)
-		{
-			char *id = readID(in);
+		if (strcmp(command, "ADD") == 0) {
+			char *id = read_id(in);
 			int score, nr_words;
 			fscanf(in, "%d%d", &score, &nr_words);
-			NodeFile *fileNode = createFileNode(id, score, NULL);
-			for (int j = 0; j < nr_words; j++)
-			{
+			node_file *file_node =
+			    create_file_node(id, score, NULL);
+			for (int j = 0; j < nr_words; j++) {
 				char word[MAX_WORD_LEN];
 				fscanf(in, "%s", word);
-				addWordToFile(fileNode, word);
+				add_word_to_file(file_node, word);
 			}
-			int result = add(fileList, fileNode, tree);
+			int result = add(file_list, file_node, root);
 			if (result == 0)
 				fprintf(out, "EXISTS\n");
-			else
-			{
+			else {
 				fprintf(out, "OK\n");
 			}
-		}
-		else if (strcmp(command, "DEL") == 0)
-		{
-			char *id = readID(in);
-			int result = del(fileList, id, tree);
+		} else if (strcmp(command, "DEL") == 0) {
+			char *id = read_id(in);
+			int result = del(file_list, id, root);
 			if (result == 0)
 				fprintf(out, "NOT FOUND\n");
-			else
-			{
+			else {
 				fprintf(out, "OK\n");
 			}
 			free(id);
-		}
-		else if (strcmp(command, "ADDKW") == 0) {
-			char *id = readID(in);
+		} else if (strcmp(command, "ADDKW") == 0) {
+			char *id = read_id(in);
 			char word[MAX_WORD_LEN];
 			fscanf(in, "%s", word);
-			int result = addkw(fileList, tree, id, word);
+			int result = add_kw(file_list, root, id, word);
 			if (result == 0)
 				fprintf(out, "NOT FOUND\n");
 			else
 				fprintf(out, "OK\n");
 			free(id);
-		}
-		else if (strcmp(command, "DELKW") == 0) {
-			char *id = readID(in);
+		} else if (strcmp(command, "DELKW") == 0) {
+			char *id = read_id(in);
 			char word[MAX_WORD_LEN];
 			fscanf(in, "%s", word);
-			int result = delkw(fileList, tree, id, word);
+			int result = del_kw(file_list, root, id, word);
 			if (result == 0)
 				fprintf(out, "NOT FOUND\n");
 			else
 				fprintf(out, "OK\n");
 			free(id);
-		}
-		else if (strcmp(command, "FIND") == 0) {
+		} else if (strcmp(command, "FIND") == 0) {
 			char word[MAX_WORD_LEN];
 			fscanf(in, "%s", word);
-			findC(tree, word, out);
-		}
-		else if (strcmp(command, "TOPK") == 0) {
+			find_c(root, word, out);
+		} else if (strcmp(command, "TOPK") == 0) {
 			char word[MAX_WORD_LEN];
 			int k;
 			fscanf(in, "%s %d", word, &k);
-			topk(tree, word, k, out);
-		}
-		else if (strcmp(command, "PRINT") == 0) {
-			printC(tree, out);
+			top_k(root, word, k, out);
+		} else if (strcmp(command, "PRINT") == 0) {
+			print_c(root, out);
+		} else if (strcmp(command, "PREFIX") == 0) {
+			char pref[MAX_WORD_LEN];
+			fscanf(in, "%s", pref);
+			prefix(root, pref, out);
 		}
 	}
-	freeTree(tree);
-	freeListFile(fileList);
+	free_tree(root);
+	free_list_file(file_list);
 	fclose(in);
 	fclose(out);
 	return 0;

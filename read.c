@@ -1,31 +1,29 @@
+// Stan David-Gabriel 313CD
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "read.h"
+#include <ctype.h>
 
-char *readID(FILE *in)
+char *read_id(FILE *in)
 {
 	char *id = (char *)malloc(sizeof(char) + 1);
-	if (id == NULL)
+	if (!id)
 		return NULL;
 	int c;
 	int len = 0, size = 2;
-	while ((c = fgetc(in)) == ' ' || c == '\n')
+	while ((c = fgetc(in)) != EOF && isspace(c))
 		continue;
-	if (c == EOF)
-	{
+	if (c == EOF) {
 		free(id);
 		return NULL;
 	}
 	id[len] = c;
 	len++;
-	while ((c = fgetc(in)) != ' ' && c != '\n' && c != EOF)
-	{
-		if (len + 1 >= size)
-		{
+	while ((c = fgetc(in)) != EOF && !isspace(c)) {
+		if (len + 1 >= size) {
 			size *= 2;
 			char *tmp = realloc(id, sizeof(char) * size);
-			if (tmp == NULL)
-			{
+			if (!tmp) {
 				free(id);
 				return NULL;
 			}
@@ -36,8 +34,7 @@ char *readID(FILE *in)
 	}
 	id[len] = '\0';
 	char *tmp = realloc(id, sizeof(char) * (len + 1));
-	if (tmp == NULL)
-	{
+	if (!tmp) {
 		free(id);
 		return NULL;
 	}

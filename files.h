@@ -1,52 +1,54 @@
+// Stan David-Gabriel 313CD
+
 #ifndef FILES_H
 #define FILES_H
 
 #define MAX_WORD_LEN 101
 
-typedef struct WordNode {
+typedef struct word_node {
 	char word[MAX_WORD_LEN];
-	struct WordNode* next;
-} WordNode;
+	struct word_node *next;
+} word_node;
 
-typedef struct NodeFile {
+typedef struct node_file {
 	char *id;
 	int score;
-	WordNode* words;
-	struct NodeFile* next;
-	struct NodeFile* prev;
-} NodeFile;
+	word_node *words;
+	struct node_file *next;
+	struct node_file *prev;
+} node_file;
 
-typedef struct ListFile {
-	NodeFile* head;
-	NodeFile* tail;
-} ListFile;
+typedef struct list_file {
+	node_file *head;
+	node_file *tail;
+} list_file;
 
-NodeFile *createFileNode(char *id, int score, WordNode *words);
+node_file *create_file_node(char *id, int score, word_node *words);
 
-WordNode *createWordNode(char *word);
+word_node *create_word_node(char *word);
 
-ListFile *initList();
+list_file *init_list(void);
 
-NodeFile *findFile(ListFile *list, char *id);
+node_file *find_file(list_file *list, char *id);
 
-int isListEmpty(ListFile *list);
+int is_list_empty(list_file *list);
 
-void insertFileAtTail(ListFile *list, NodeFile *node);
+void insert_file_at_tail(list_file *list, node_file *node);
 
-WordNode *fileHasWord(NodeFile *file, char *word);
+word_node *file_has_word(node_file *file, char *word);
 
-void addWordToFile(NodeFile *file, char *word);
+void add_word_to_file(node_file *file, char *word);
 
-int isWordListEmpty(WordNode *word);
+int is_word_list_empty(word_node *word);
 
-void removeFileFromList(ListFile *list, NodeFile *file);
+void remove_file_from_list(list_file *list, node_file *file);
 
-void removeWordFromFile(NodeFile *file, char *word);
+void remove_word_from_file(node_file *file, char *word);
 
-void freeWords(WordNode *words);
+void free_words(word_node *words);
 
-void freeFile(NodeFile *file);
+void free_file(node_file *file);
 
-void freeListFile(ListFile *list);
+void free_list_file(list_file *list);
 
 #endif
