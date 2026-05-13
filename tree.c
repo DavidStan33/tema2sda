@@ -19,7 +19,7 @@ tree *create_tree_node(char letter)
 	return node;
 }
 
-static ref_file_list *create_ref_file_node(node_file *file)
+ref_file_list *create_ref_file_node(node_file *file)
 {
 	ref_file_list *node = (ref_file_list *)malloc(sizeof(ref_file_list));
 	node->file = file;
@@ -35,7 +35,7 @@ void add_file_ref_to_tree_node(tree *node, node_file *file)
 	node->nr_files++;
 }
 
-static int get_char_index(char c)
+int get_char_index(char c)
 {
 	return c - 'a';
 }

@@ -13,7 +13,7 @@ heap *create_heap(int capacity)
 	return h;
 }
 
-static int compare(node_file *a, node_file *b)
+int compare(node_file *a, node_file *b)
 {
 	if (a->score > b->score)
 		return 1;
@@ -25,7 +25,7 @@ static int compare(node_file *a, node_file *b)
 		return 0;
 }
 
-static heap *sift_up(heap *h, int index)
+heap *sift_up(heap *h, int index)
 {
 	while (index > 0 &&
 	       compare(h->files[(index - 1) / 2], h->files[index]) == 0) {
@@ -49,7 +49,7 @@ heap *insert_heap(heap *h, node_file *file)
 	return h;
 }
 
-static heap *sift_down(heap *h, int index)
+heap *sift_down(heap *h, int index)
 {
 	int max_index = index;
 	int l = index * 2 + 1;
