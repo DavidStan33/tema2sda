@@ -22,6 +22,8 @@ tree *create_tree_node(char letter)
 ref_file_list *create_ref_file_node(node_file *file)
 {
 	ref_file_list *node = (ref_file_list *)malloc(sizeof(ref_file_list));
+	if (!node)
+		return NULL;
 	node->file = file;
 	node->next = NULL;
 	return node;
@@ -30,6 +32,8 @@ ref_file_list *create_ref_file_node(node_file *file)
 void add_file_ref_to_tree_node(tree *node, node_file *file)
 {
 	ref_file_list *new_ref = create_ref_file_node(file);
+	if (!new_ref)
+		return;
 	new_ref->next = node->ref_list;
 	node->ref_list = new_ref;
 	node->nr_files++;

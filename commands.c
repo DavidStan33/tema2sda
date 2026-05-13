@@ -85,6 +85,8 @@ void find_c(tree *root, char *word, FILE *out)
 	}
 	node_file **files =
 	    (node_file **)malloc(sizeof(node_file *) * node->nr_files);
+	if (!files)
+		return;
 	ref_file_list *ref_list = node->ref_list;
 	int index = 0;
 	while (ref_list) {
@@ -139,6 +141,8 @@ void print_tree(tree *root, char *word, int depth, int *printed, FILE *out)
 		fprintf(out, "%s %d", word, root->nr_files);
 		node_file **files =
 		    (node_file **)malloc(sizeof(node_file *) * root->nr_files);
+		if (!files)
+			return;
 		ref_file_list *ref_list = root->ref_list;
 		int index = 0;
 		while (ref_list) {
@@ -172,6 +176,8 @@ void print_tree(tree *root, char *word, int depth, int *printed, FILE *out)
 void print_c(tree *root, FILE *out)
 {
 	char *word = malloc(sizeof(char) * MAX_WORD_LEN);
+	if (!word)
+		return;
 	int printed = 0;
 	print_tree(root, word, 0, &printed, out);
 	if (printed == 0)
@@ -195,7 +201,11 @@ void add_collected_file(node_file ***files, node_file *file, int *count,
 		return;
 	if (*count == *capacity) {
 		*capacity *= 2;
-		*files = realloc(*files, sizeof(node_file *) * (*capacity));
+		node_file **tmp =
+		    realloc(*files, sizeof(node_file *) * (*capacity));
+		if (!tmp)
+			return;
+		*files = tmp;
 	}
 	(*files)[*count] = file;
 	(*count)++;
@@ -231,6 +241,8 @@ void prefix(tree *root, char *prefix, FILE *out)
 	int count = 0, capacity = 1;
 	node_file **files =
 	    (node_file **)malloc(sizeof(node_file *) * capacity);
+	if (!files)
+		return;
 	collect_prefix_files(node, &files, &count, &capacity);
 	if (count == 0)
 		fprintf(out, "EMPTY\n");

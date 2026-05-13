@@ -7,9 +7,15 @@
 heap *create_heap(int capacity)
 {
 	heap *h = (heap *)malloc(sizeof(heap));
+	if (!h)
+		return NULL;
 	h->size = 0;
 	h->capacity = capacity;
 	h->files = (node_file **)malloc(sizeof(node_file *) * capacity);
+	if (!h->files) {
+		free(h);
+		return NULL;
+	}
 	return h;
 }
 
@@ -41,7 +47,11 @@ heap *insert_heap(heap *h, node_file *file)
 {
 	if (h->size == h->capacity) {
 		h->capacity *= 2;
-		h->files = realloc(h->files, h->capacity * sizeof(node_file *));
+		node_file **tmp =
+		    realloc(h->files, h->capacity * sizeof(node_file *));
+		if (!tmp)
+			return NULL;
+		h->files = tmp;
 	}
 	h->files[h->size] = file;
 	h = sift_up(h, h->size);
